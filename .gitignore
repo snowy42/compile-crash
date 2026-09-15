@@ -1,21 +1,2 @@
-node_modules/
-dist/
-artifacts/
-*.log
 .DS_Store
-Thumbs.db
-.vscode/
-.idea/
-coverage/
-.env
-.env.*
-!.env.example
-# Reconstructed exactly by scripts/stitch.mjs from source-parts/
-src/main.ts
-src/ui/view.ts
-src/core/game.ts
-src/core/pipeline.ts
-src/platform/save.ts
-public/style-3.css
-tests/browser.py
-tests/engine.test.mjs
+artifacts/
