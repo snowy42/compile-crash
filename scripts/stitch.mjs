@@ -1,9 +1,11 @@
 import { readdir, readFile, writeFile, mkdir } from 'node:fs/promises';
-const manifest = JSON.parse(await readFile('source-parts/manifest.json', 'utf8'));
-for (const { target, dir } of manifest) {
-  const names = (await readdir(dir)).filter(name => name.endsWith('.part')).sort();
-  if (!names.length) throw new Error(`No source parts in ${dir}`);
-  const chunks = await Promise.all(names.map(name => readFile(`${dir}/${name}`)));
+import { gunzipSync } from 'node:zlib';
+const dir = 'source-parts/payload';
+const names = (await readdir(dir)).filter(name => name.endsWith('.part')).sort();
+if (!names.length) throw new Error('Missing source payload');
+const encoded = (await Promise.all(names.map(name => readFile(`${dir}/${name}`, 'utf8')))).join('');
+const payload = JSON.parse(gunzipSync(Buffer.from(encoded, 'base64')).toString('utf8'));
+for (const [target, base64] of Object.entries(payload)) {
   await mkdir(target.slice(0, target.lastIndexOf('/')), { recursive: true });
-  await writeFile(target, Buffer.concat(chunks));
+  await writeFile(target, Buffer.from(base64, 'base64'));
 }
