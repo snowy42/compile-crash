@@ -1,0 +1,22 @@
+{
+  "name": "compile-crash",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A local-first keyboard-powered engine-building roguelite.",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "source": "node scripts/stitch.mjs",
+    "start": "npm run build && npm run preview",
+    "build": "npm run source && tsc && node scripts/build.mjs",
+    "preview": "node scripts/serve.mjs",
+    "typecheck": "npm run source && tsc --noEmit",
+    "lint": "node scripts/lint.mjs",
+    "test": "npm run build && node --test tests/*.test.mjs",
+    "test:content": "npm run build && node --test tests/content.test.mjs",
+    "test:seeds": "npm run build && node scripts/simulate.mjs",
+    "test:e2e": "python tests/browser.py"
+  },
+  "devDependencies": { "typescript": "5.8.3" }
+}
